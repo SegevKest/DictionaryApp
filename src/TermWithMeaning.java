@@ -27,9 +27,9 @@ public class TermWithMeaning {
 	
 	public void setMeaning(String newMeaning) {
 		
-		if (newMeaning != null)		
+		if (newMeaning != null && newMeaning instanceof String)		
 			meaning = newMeaning;
-		
-		
 	}
+	
+	
 }

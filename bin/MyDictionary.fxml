@@ -17,8 +17,8 @@
    <left>
       <VBox prefHeight="400.0" prefWidth="173.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="loadDicFromFileBtn" mnemonicParsing="false" onMouseClicked="#loadFromFile" prefHeight="40.0" prefWidth="173.0" text="Load From File" />
-            <Button fx:id="saveToFileBtn" mnemonicParsing="false" onMouseClicked="#saveDicToFile" prefHeight="37.0" prefWidth="173.0" text="Save to File" />
+            <Button mnemonicParsing="false" onAction="#loadDicFromFilePressed" prefHeight="40.0" prefWidth="173.0" text="Load From File" />
+            <Button mnemonicParsing="false" onAction="#saveToFilePressed" prefHeight="37.0" prefWidth="173.0" text="Save to File" />
             <Accordion prefHeight="323.0" prefWidth="173.0">
               <panes>
                 <TitledPane animated="false" prefHeight="262.0" prefWidth="173.0" text="Search for Term">
@@ -27,7 +27,7 @@
                            <children>
                               <TextField fx:id="searchTermInput" layoutX="9.0" layoutY="42.0" prefHeight="24.0" prefWidth="157.0" />
                               <Label layoutX="11.0" layoutY="14.0" prefHeight="28.0" prefWidth="153.0" text="Search by Term Name" />
-                              <Button fx:id="searchBtn" layoutX="11.0" layoutY="86.0" mnemonicParsing="false" onMouseClicked="#onSearchTerm" prefHeight="34.0" prefWidth="154.0" text="Search" />
+                              <Button layoutX="11.0" layoutY="86.0" mnemonicParsing="false" onAction="#searchPressed" prefHeight="34.0" prefWidth="154.0" text="Search" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -40,7 +40,7 @@
                               <TextField fx:id="insertNewTermNameInput" layoutX="8.0" layoutY="30.0" prefHeight="26.0" prefWidth="159.0" />
                               <Label layoutX="11.0" layoutY="60.0" prefHeight="27.0" prefWidth="152.0" text="Term's Meaning" />
                               <TextArea fx:id="insertNewTermMeaningInput" layoutX="8.0" layoutY="87.0" prefHeight="61.0" prefWidth="159.0" />
-                              <Button fx:id="insertNewTermBtn" layoutX="12.0" layoutY="158.0" mnemonicParsing="false" onMouseClicked="#onInsertNewTerm" prefHeight="30.0" prefWidth="153.0" text="Insert" />
+                              <Button layoutX="12.0" layoutY="158.0" mnemonicParsing="false" onAction="#insertNewTermPressed" prefHeight="30.0" prefWidth="153.0" text="Insert" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -49,7 +49,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="deleteTermBtn" layoutX="9.0" layoutY="88.0" mnemonicParsing="false" onMouseClicked="#onDeleteTerm" prefHeight="34.0" prefWidth="157.0" text="Delete" />
+                              <Button layoutX="9.0" layoutY="88.0" mnemonicParsing="false" onAction="#deleteTermPressed" prefHeight="34.0" prefWidth="157.0" text="Delete" />
                               <Label layoutX="10.0" layoutY="14.0" prefHeight="27.0" prefWidth="151.0" text="Term Name to Delete" />
                               <TextField fx:id="deleteTermInput" layoutX="7.0" layoutY="41.0" prefHeight="27.0" prefWidth="161.0" />
                            </children>
@@ -64,7 +64,7 @@
                               <TextField fx:id="updateTermNameInput" layoutX="6.0" layoutY="26.0" prefHeight="26.0" prefWidth="159.0" />
                               <Label layoutX="11.0" layoutY="57.0" prefHeight="27.0" prefWidth="152.0" text="New Meaning" />
                               <TextArea fx:id="updateNewTermMeaning" layoutX="7.0" layoutY="85.0" prefHeight="61.0" prefWidth="159.0" />
-                              <Button fx:id="updateMeaningBtn" layoutX="10.0" layoutY="156.0" mnemonicParsing="false" onMouseClicked="#onUpdateMeaning" prefHeight="32.0" prefWidth="155.0" text="Update" />
+                              <Button layoutX="10.0" layoutY="156.0" mnemonicParsing="false" onAction="#updateMeaningPressed" prefHeight="32.0" prefWidth="155.0" text="Update" />
                            </children>
                         </AnchorPane>
                      </content>
