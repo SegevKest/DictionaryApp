@@ -22,6 +22,28 @@ public class Dictionary implements Serializable{
 		
 		this.termsWithMeanings.put(termName, meaning);
 		
+		
+	}
+	
+	
+	public void updateMeaningOfTerm(String termName, String newMeaning) {
+
+		
+		if ( this.termsWithMeanings.containsKey(termName) )
+			this.termsWithMeanings.put(termName, newMeaning);		
+		
+	}
+	
+	public void removeTerm(String termNameToRemove) {
+		
+		this.termsWithMeanings.remove(termNameToRemove);
+	}
+	
+	
+	public String searchTerm(String termNameToSearch) {
+		
+		return this.termsWithMeanings.get(termNameToSearch) ;
+		
 	}
 
 	
