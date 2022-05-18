@@ -1,25 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyDictionaryController">
    <left>
       <VBox prefHeight="400.0" prefWidth="173.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="loadDicFromFileBtn" mnemonicParsing="false" onMouseClicked="#loadFromFile" text="Load From FIle" />
-            <Button fx:id="saveToFileBtn" mnemonicParsing="false" onMouseClicked="#saveDicToFile" prefHeight="31.0" prefWidth="96.0" text="Save to File" />
+            <Button fx:id="loadDicFromFileBtn" mnemonicParsing="false" onMouseClicked="#loadFromFile" prefHeight="40.0" prefWidth="173.0" text="Load From File" />
+            <Button fx:id="saveToFileBtn" mnemonicParsing="false" onMouseClicked="#saveDicToFile" prefHeight="37.0" prefWidth="173.0" text="Save to File" />
+            <Accordion prefHeight="323.0" prefWidth="173.0">
+              <panes>
+                <TitledPane animated="false" prefHeight="262.0" prefWidth="173.0" text="Search for Term">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="searchTermInput" layoutX="9.0" layoutY="42.0" prefHeight="24.0" prefWidth="157.0" />
+                              <Label layoutX="11.0" layoutY="14.0" prefHeight="28.0" prefWidth="153.0" text="Search by Term Name" />
+                              <Button fx:id="searchBtn" layoutX="11.0" layoutY="86.0" mnemonicParsing="false" onMouseClicked="#onSearchTerm" prefHeight="34.0" prefWidth="154.0" text="Search" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Insert New Term">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="10.0" layoutY="3.0" prefHeight="27.0" prefWidth="152.0" text="New term Name" />
+                              <TextField fx:id="insertNewTermNameInput" layoutX="8.0" layoutY="30.0" prefHeight="26.0" prefWidth="159.0" />
+                              <Label layoutX="11.0" layoutY="60.0" prefHeight="27.0" prefWidth="152.0" text="Term's Meaning" />
+                              <TextArea fx:id="insertNewTermMeaningInput" layoutX="8.0" layoutY="87.0" prefHeight="61.0" prefWidth="159.0" />
+                              <Button fx:id="insertNewTermBtn" layoutX="12.0" layoutY="158.0" mnemonicParsing="false" onMouseClicked="#onInsertNewTerm" prefHeight="30.0" prefWidth="153.0" text="Insert" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Delete Term">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="deleteTermBtn" layoutX="9.0" layoutY="88.0" mnemonicParsing="false" onMouseClicked="#onDeleteTerm" prefHeight="34.0" prefWidth="157.0" text="Delete" />
+                              <Label layoutX="10.0" layoutY="14.0" prefHeight="27.0" prefWidth="151.0" text="Term Name to Delete" />
+                              <TextField fx:id="deleteTermInput" layoutX="7.0" layoutY="41.0" prefHeight="27.0" prefWidth="161.0" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+                  <TitledPane animated="false" layoutX="10.0" layoutY="60.0" text="Update Meaning of Term">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="214.0" prefWidth="171.0">
+                           <children>
+                              <Label layoutX="9.0" layoutY="-1.0" prefHeight="27.0" prefWidth="152.0" text="Term Name" />
+                              <TextField fx:id="updateTermNameInput" layoutX="6.0" layoutY="26.0" prefHeight="26.0" prefWidth="159.0" />
+                              <Label layoutX="11.0" layoutY="57.0" prefHeight="27.0" prefWidth="152.0" text="New Meaning" />
+                              <TextArea fx:id="updateNewTermMeaning" layoutX="7.0" layoutY="85.0" prefHeight="61.0" prefWidth="159.0" />
+                              <Button fx:id="updateMeaningBtn" layoutX="10.0" layoutY="156.0" mnemonicParsing="false" onMouseClicked="#onUpdateMeaning" prefHeight="32.0" prefWidth="155.0" text="Update" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+              </panes>
+            </Accordion>
          </children>
       </VBox>
    </left>
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Dictionary" />
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="432.0" text="Dictionary">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
             <ListView fx:id="dictionaryList" prefHeight="518.0" prefWidth="427.0" />
          </children>
       </VBox>
