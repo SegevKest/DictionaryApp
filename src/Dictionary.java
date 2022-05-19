@@ -2,6 +2,10 @@ import java.io.Serializable;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+
+//The Dictionary Class, which represent the Logic of the app in the background.
+// Implements Serializable to wirte the Dictionary Object to File and loading it
+// Uses a SortedMap - TreeMap Object for keeping the Data
 public class Dictionary implements Serializable{
 
 	private SortedMap<String, String> termsWithMeanings;
@@ -29,7 +33,7 @@ public class Dictionary implements Serializable{
 	// Add new Term to the dictionary. Returns true if insertion happened, false if already exist
 	public boolean addNewTerm(String termName, String meaning) {
 	
-		if ( !this.termsWithMeanings.containsKey(termName) ) {
+		if ( !this.termsWithMeanings.containsKey(termName) && termName.length() != 0) {
 			this.termsWithMeanings.put(termName, meaning);
 			return true;
 		}

@@ -21,10 +21,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 
+
+// The main Controller of the Dictionary
+// Will include all GUI manipulation and will activate the Logic from Dictionary Class
 public class MyDictionaryController {
 
-	
-    
     private Dictionary theDictionary; 
     
 
@@ -43,10 +44,10 @@ public class MyDictionaryController {
     @FXML private TextField updateTermNameInput;
 
     
+    //Initializing the Controller
     public void initialize() {
     	
     	theDictionary = new Dictionary();
-    	
     }
     
     //Operations Handling
@@ -184,10 +185,13 @@ public class MyDictionaryController {
 			
 		} catch (FileNotFoundException e) {
 			alertMsg = new Alert(Alert.AlertType.ERROR, "Could not find the file!");  
+			alertMsg.showAndWait();
 		} catch (ClassNotFoundException e) {
 			alertMsg = new Alert(Alert.AlertType.ERROR, "Class Was not Found!");  
+			alertMsg.showAndWait();
 		} catch (IOException e) {
-			alertMsg = new Alert(Alert.AlertType.ERROR, "IO Exception!");  
+			alertMsg = new Alert(Alert.AlertType.ERROR, "IO Exception!"); 
+			alertMsg.showAndWait();
 		} catch (NullPointerException e) {
 			alertMsg = new Alert(Alert.AlertType.ERROR, "File Not selected!");  
 			alertMsg.showAndWait();
@@ -212,9 +216,11 @@ public class MyDictionaryController {
 	    	fo.close();
 	    	
 		} catch (FileNotFoundException e) {
-			alertMsg = new Alert(Alert.AlertType.ERROR, "Could not find the file!");    	
+			alertMsg = new Alert(Alert.AlertType.ERROR, "Could not find the file!"); 
+			alertMsg.showAndWait();
 		} catch (IOException e) {
-			alertMsg = new Alert(Alert.AlertType.ERROR, "IO Exception!");    
+			alertMsg = new Alert(Alert.AlertType.ERROR, "IO Exception!");   
+			alertMsg.showAndWait();
 		} catch (NullPointerException e) {
 			alertMsg = new Alert(Alert.AlertType.ERROR, "File Not selected!");  
 			alertMsg.showAndWait();
@@ -261,7 +267,4 @@ public class MyDictionaryController {
 		
 		return contentOfLabel.substring(INDEX_OF_FIRST_COLON, indexOfNewLine).trim();
     }
-    
-    
-
 }
