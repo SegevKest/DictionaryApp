@@ -23,6 +23,12 @@ public class Dictionary implements Serializable{
 			this.termsWithMeanings = termsWithMeanings;
 	}
 
+	// Set the Dictionary by the parameter
+	public void setDictionary(Dictionary termsWithMeanings) {
+		
+			this.termsWithMeanings = termsWithMeanings.getTermsWithMeanings();
+	}
+	
 	
 	public void addNewTerm(String termName, String meaning) {
 		

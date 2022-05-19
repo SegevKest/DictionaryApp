@@ -1,8 +1,11 @@
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.SortedMap;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -95,11 +98,39 @@ public class MyDictionaryController {
     
     // File handling
     
+    //Method that will invoke when click on Load from File
     @FXML void loadDicFromFilePressed(ActionEvent event) {
 
-    	System.out.println("load");
-    }
-
+    	File fileToOpenWith = getFileFromUser();
+    	
+    	
+		try {
+			FileInputStream fi = new FileInputStream(fileToOpenWith);
+			ObjectInputStream objInp = new ObjectInputStream(fi);
+			
+			//theDictionary.setDictionary((Dictionary) objInp.readObject());
+			theDictionary.setTermsWithMeanings( (SortedMap<String, String>) objInp.readObject() );
+			
+			objInp.close();
+			fi.close();
+	    	
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+    	
+    	//theDictionary.setTermsWithMeanings( (SortedMap<String, String>) objInp.readObject() );
+    	
+ 
+    }   
+    
+    
+    //Method that will invoke when click on Save to File
     @FXML void saveToFilePressed(ActionEvent event) {
     	
     	File fileToSaveIn = getFileFromUser();
@@ -118,11 +149,7 @@ public class MyDictionaryController {
 		
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-    
-    	
-
-    	
+		}	
     }
     
     // Method to get the File from the user, using a File Chooser window
