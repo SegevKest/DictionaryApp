@@ -82,7 +82,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <ListView fx:id="dictionaryList" prefHeight="518.0" prefWidth="427.0" />
+            <ListView fx:id="dictionaryList" prefHeight="376.0" prefWidth="427.0" />
          </children>
       </VBox>
    </center>

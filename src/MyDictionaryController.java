@@ -10,7 +10,9 @@ import java.util.SortedMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -25,7 +27,7 @@ public class MyDictionaryController {
 
     @FXML private TextField deleteTermInput;
 
-    @FXML private ListView<?> dictionaryList;
+    @FXML private ListView<Label> dictionaryList;
 
     @FXML private TextArea insertNewTermMeaningInput;
 
@@ -55,19 +57,27 @@ public class MyDictionaryController {
     	// Remove the term recieved
     	theDictionary.removeTerm(termToRemove);
     	
-    	
     	System.out.println(theDictionary);
     }
+    
 
     @FXML void insertNewTermPressed(ActionEvent event) {
 
     	//Get values of inputs
     	String newTermName = insertNewTermNameInput.getText();
     	String newMeaning = insertNewTermMeaningInput.getText();
+    	boolean insertRes;
     	
     	
     	//Add to dictionary 
-    	theDictionary.addNewTerm(newTermName, newMeaning);
+    	insertRes = theDictionary.addNewTerm(newTermName, newMeaning);
+    	
+    	// Insert new element to ListView if necessary
+    	if (insertRes) {
+	    	Label newElem = new Label();
+	    	newElem.setText("Term: "+newTermName +"\nMeaning: "+newMeaning);
+	    	dictionaryList.getItems().add(newElem);
+    	}
     	
     	System.out.println(theDictionary);
     	//System.out.println(newTermName + " - "+ newMeaning);
@@ -88,9 +98,21 @@ public class MyDictionaryController {
        	//Get values of inputs
     	String termName = updateTermNameInput.getText();
     	String newMeaning = updateNewTermMeaning.getText();
+    	boolean updateRes;
     	
     	//Update dictionary 
-    	theDictionary.updateMeaningOfTerm(termName, newMeaning);
+    	updateRes = theDictionary.updateMeaningOfTerm(termName, newMeaning);
+    	
+    	// Insert new element to ListView if necessary
+    	if (updateRes) {
+	    	
+    		for (Label singleTerm : dictionaryList.getItems())
+    		{
+    			if (singleTerm.getText().contains(termName) )
+    				singleTerm.setText("Term: "+termName +"\nMeaning: "+newMeaning);
+    		}
+    	}
+    
     	
     	System.out.println(theDictionary);
     }
@@ -99,7 +121,7 @@ public class MyDictionaryController {
     // File handling
     
     //Method that will invoke when click on Load from File
-    @FXML void loadDicFromFilePressed(ActionEvent event) {
+	@FXML void loadDicFromFilePressed(ActionEvent event) {
 
     	File fileToOpenWith = getFileFromUser();
     	
@@ -108,12 +130,12 @@ public class MyDictionaryController {
 			FileInputStream fi = new FileInputStream(fileToOpenWith);
 			ObjectInputStream objInp = new ObjectInputStream(fi);
 			
-			//theDictionary.setDictionary((Dictionary) objInp.readObject());
 			theDictionary.setTermsWithMeanings( (SortedMap<String, String>) objInp.readObject() );
 			
 			objInp.close();
 			fi.close();
 	    	
+			System.out.println(theDictionary);
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -121,13 +143,8 @@ public class MyDictionaryController {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-    	
-    	
-    	//theDictionary.setTermsWithMeanings( (SortedMap<String, String>) objInp.readObject() );
-    	
- 
-    }   
+		}    	
+   }   
     
     
     //Method that will invoke when click on Save to File
@@ -146,7 +163,6 @@ public class MyDictionaryController {
 	    	
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	
@@ -161,7 +177,6 @@ public class MyDictionaryController {
     	fileChooser.setInitialDirectory(new File("."));
     	
     	return fileChooser.showOpenDialog(null);
-    	
     }
 
     

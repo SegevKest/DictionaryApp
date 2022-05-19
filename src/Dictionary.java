@@ -6,7 +6,7 @@ public class Dictionary implements Serializable{
 
 	private SortedMap<String, String> termsWithMeanings;
 
-	
+	// Const
 	public Dictionary() {
 		this.termsWithMeanings = new TreeMap<String,String>();
 	}
@@ -16,43 +16,44 @@ public class Dictionary implements Serializable{
 		return termsWithMeanings;
 	}
 
-	// Set the Dictionary by the parameter
+	// Set the Dictionary according to the parameter
 	public void setTermsWithMeanings(SortedMap<String, String> termsWithMeanings) {
 		
 		if (termsWithMeanings instanceof SortedMap<?,?>)
 			this.termsWithMeanings = termsWithMeanings;
-	}
-
-	// Set the Dictionary by the parameter
-	public void setDictionary(Dictionary termsWithMeanings) {
-		
-			this.termsWithMeanings = termsWithMeanings.getTermsWithMeanings();
-	}
+	}	
 	
+	// Add new Term to the dictionary. Returns true if insertion happened, false if already exist
+	public boolean addNewTerm(String termName, String meaning) {
 	
-	public void addNewTerm(String termName, String meaning) {
-		
-		this.termsWithMeanings.put(termName, meaning);
-		
-		
+		if ( !this.termsWithMeanings.containsKey(termName) ) {
+			this.termsWithMeanings.put(termName, meaning);
+			return true;
+		}
+		else
+			return false;
 	}
 	
 
-
-	public void updateMeaningOfTerm(String termName, String newMeaning) {
+	// The method updates the Term meaning in the Dictionary only if it is exist
+	public boolean updateMeaningOfTerm(String termName, String newMeaning) {
 
 		
-		if ( this.termsWithMeanings.containsKey(termName) )
+		if ( this.termsWithMeanings.containsKey(termName) )	{
 			this.termsWithMeanings.put(termName, newMeaning);		
+			return true;
+		}
 		
+		return false;
 	}
 	
+	// Remove the Term from the Dictionary
 	public void removeTerm(String termNameToRemove) {
 		
 		this.termsWithMeanings.remove(termNameToRemove);
 	}
 	
-	
+	// Search the term in the Dictionary - return null if not exist, its value if exist
 	public String searchTerm(String termNameToSearch) {
 		
 		return this.termsWithMeanings.get(termNameToSearch) ;
