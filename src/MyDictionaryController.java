@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 
 import javafx.event.ActionEvent;
@@ -75,7 +77,7 @@ public class MyDictionaryController {
     	//Get values of inputs
     	String newTermName = insertNewTermNameInput.getText();
     	String newMeaning = insertNewTermMeaningInput.getText();
-    	boolean insertRes;
+    	boolean insertRes, wasInserted = false;
     	int indexOfLabels = 0;
     	
     	
@@ -84,6 +86,7 @@ public class MyDictionaryController {
     	
     	// Insert new element to ListView if necessary
     	if (insertRes) {
+    		
 	    	Label newElem = new Label();
 	    	newElem.setText("Term: "+newTermName +"\n\nMeaning: "+newMeaning);
 	    	
@@ -92,16 +95,21 @@ public class MyDictionaryController {
 	    		
 				for (Label singleTerm : dictionaryList.getItems())
 				{
-					if (singleTerm.getText().compareTo(newTermName) > 0 )	{
-						if (indexOfLabels > 0)
-							dictionaryList.getItems().add(indexOfLabels - 1, newElem);
-						else
-							dictionaryList.getItems().add(indexOfLabels , newElem);
-						
+					// Split the current Term name for comparison
+					int indexOfNewLine = singleTerm.getText().indexOf('\n');
+					String currTerm = singleTerm.getText().substring(5, indexOfNewLine).trim();
+					
+					if (currTerm.compareTo(newTermName) > 0 )	{
+						dictionaryList.getItems().add(indexOfLabels , newElem);
+						wasInserted = true;
 						break;
 					}
-					indexOfLabels++;
-				}		
+					else
+						indexOfLabels++;
+				}
+				if (!wasInserted)
+					dictionaryList.getItems().add(indexOfLabels , newElem);
+				
 	    	}
 	    	else
 	    		dictionaryList.getItems().add(newElem);
@@ -109,7 +117,6 @@ public class MyDictionaryController {
     	}
     	
     	System.out.println(theDictionary);
-    	//System.out.println(newTermName + " - "+ newMeaning);
     }
 
 
@@ -145,8 +152,15 @@ public class MyDictionaryController {
 	    	
     		for (Label singleTerm : dictionaryList.getItems())
     		{
-    			if (singleTerm.getText().contains(termName) )
+    			
+    			// Split the current Term name for comparison
+				int indexOfNewLine = singleTerm.getText().indexOf('\n');
+				String currTerm = singleTerm.getText().substring(5, indexOfNewLine).trim();
+				
+				if (currTerm.equals(termName) )	{
     				singleTerm.setText("Term: "+termName +"\n\nMeaning: "+newMeaning);
+    				break;
+    			}
     		}
     	}
     
@@ -162,12 +176,13 @@ public class MyDictionaryController {
 
     	File fileToOpenWith = getFileFromUser();
     	
-    	
 		try {
 			FileInputStream fi = new FileInputStream(fileToOpenWith);
 			ObjectInputStream objInp = new ObjectInputStream(fi);
 			
 			theDictionary.setTermsWithMeanings( (SortedMap<String, String>) objInp.readObject() );
+			
+			loadAllTermsToListView();
 			
 			objInp.close();
 			fi.close();
@@ -180,7 +195,7 @@ public class MyDictionaryController {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}    	
+		}    		
    }   
     
     
@@ -215,7 +230,34 @@ public class MyDictionaryController {
     	
     	return fileChooser.showOpenDialog(null);
     }
+    
+    //The method will load all the Terms to Screen on Load file of dictionary
+    private void loadAllTermsToListView() {
+    	
+    	Iterator<Entry<String, String>> dictionaryIter = theDictionary.getTermsWithMeanings().entrySet().iterator();
+    	
+    	while(dictionaryIter.hasNext()) {
+    			
+    		Entry<String,String> currTerm = dictionaryIter.next();
+    		String newTermName = currTerm.getKey();
+    		String newMeaning = currTerm.getKey();
+    		
+    		Label newElem = new Label();
+	    	newElem.setText("Term: "+newTermName +"\n\nMeaning: "+newMeaning);
+	    	
+    		dictionaryList.getItems().add(newElem);
+    	}
+    }
 
+    
+    private String splitTermName(String contentOfLabel) {
+    	
+		int indexOfNewLine = contentOfLabel.indexOf('\n');
+		String currTerm = contentOfLabel.substring(5, indexOfNewLine).trim();
+		
+		return currTerm;
+		
+    }
     
     
 
