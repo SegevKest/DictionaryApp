@@ -57,6 +57,15 @@ public class MyDictionaryController {
     	// Remove the term recieved
     	theDictionary.removeTerm(termToRemove);
     	
+    	//Remove from ListView
+		for (Label singleTerm : dictionaryList.getItems())
+		{
+			if (singleTerm.getText().contains(termToRemove) )	{
+				dictionaryList.getItems().remove(singleTerm);
+				break;
+			}
+		}
+		
     	System.out.println(theDictionary);
     }
     
@@ -67,6 +76,7 @@ public class MyDictionaryController {
     	String newTermName = insertNewTermNameInput.getText();
     	String newMeaning = insertNewTermMeaningInput.getText();
     	boolean insertRes;
+    	int indexOfLabels = 0;
     	
     	
     	//Add to dictionary 
@@ -75,8 +85,27 @@ public class MyDictionaryController {
     	// Insert new element to ListView if necessary
     	if (insertRes) {
 	    	Label newElem = new Label();
-	    	newElem.setText("Term: "+newTermName +"\nMeaning: "+newMeaning);
-	    	dictionaryList.getItems().add(newElem);
+	    	newElem.setText("Term: "+newTermName +"\n\nMeaning: "+newMeaning);
+	    	
+	    	//Insert in Sorted way to ListView
+	    	if (dictionaryList.getItems().size() > 0)	{
+	    		
+				for (Label singleTerm : dictionaryList.getItems())
+				{
+					if (singleTerm.getText().compareTo(newTermName) > 0 )	{
+						if (indexOfLabels > 0)
+							dictionaryList.getItems().add(indexOfLabels - 1, newElem);
+						else
+							dictionaryList.getItems().add(indexOfLabels , newElem);
+						
+						break;
+					}
+					indexOfLabels++;
+				}		
+	    	}
+	    	else
+	    		dictionaryList.getItems().add(newElem);
+	    	
     	}
     	
     	System.out.println(theDictionary);
@@ -90,6 +119,14 @@ public class MyDictionaryController {
     	String searchTerm = searchTermInput.getText();
     	
    
+    	for (Label singleTerm : dictionaryList.getItems())
+		{
+			if (singleTerm.getText().contains(searchTerm) )	{
+				dictionaryList.getSelectionModel().select(singleTerm);
+				break;
+			}
+		}
+    	
     	System.out.println(theDictionary.searchTerm(searchTerm));
     }
 
@@ -109,7 +146,7 @@ public class MyDictionaryController {
     		for (Label singleTerm : dictionaryList.getItems())
     		{
     			if (singleTerm.getText().contains(termName) )
-    				singleTerm.setText("Term: "+termName +"\nMeaning: "+newMeaning);
+    				singleTerm.setText("Term: "+termName +"\n\nMeaning: "+newMeaning);
     		}
     	}
     
