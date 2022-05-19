@@ -11,6 +11,7 @@ import java.util.SortedMap;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -48,30 +49,31 @@ public class MyDictionaryController {
     	
     }
     
+    //Operations Handling
     
-    
-    
+    //Delete a Term from the Dictionary
     @FXML void deleteTermPressed(ActionEvent event) {
     	
     	//Get value of input
     	String termToRemove = deleteTermInput.getText();
 
-    	// Remove the term recieved
+    	// Remove the term received
     	theDictionary.removeTerm(termToRemove);
     	
     	//Remove from ListView
 		for (Label singleTerm : dictionaryList.getItems())
 		{
-			if (singleTerm.getText().contains(termToRemove) )	{
+			String currTerm = splitTermName(singleTerm.getText());
+			
+			if (currTerm.equals(termToRemove) )	{
 				dictionaryList.getItems().remove(singleTerm);
 				break;
 			}
 		}
-		
-    	System.out.println(theDictionary);
     }
     
 
+    //Insert a new Term to the Dictionary in a Sorted way
     @FXML void insertNewTermPressed(ActionEvent event) {
 
     	//Get values of inputs
@@ -88,16 +90,14 @@ public class MyDictionaryController {
     	if (insertRes) {
     		
 	    	Label newElem = new Label();
-	    	newElem.setText("Term: "+newTermName +"\n\nMeaning: "+newMeaning);
+	    	newElem.setText("Term: "+newTermName +"\n\nMeaning: "+newMeaning +"\n");
 	    	
 	    	//Insert in Sorted way to ListView
 	    	if (dictionaryList.getItems().size() > 0)	{
 	    		
 				for (Label singleTerm : dictionaryList.getItems())
 				{
-					// Split the current Term name for comparison
-					int indexOfNewLine = singleTerm.getText().indexOf('\n');
-					String currTerm = singleTerm.getText().substring(5, indexOfNewLine).trim();
+					String currTerm = splitTermName(singleTerm.getText());
 					
 					if (currTerm.compareTo(newTermName) > 0 )	{
 						dictionaryList.getItems().add(indexOfLabels , newElem);
@@ -108,35 +108,34 @@ public class MyDictionaryController {
 						indexOfLabels++;
 				}
 				if (!wasInserted)
-					dictionaryList.getItems().add(indexOfLabels , newElem);
-				
+					dictionaryList.getItems().add(indexOfLabels , newElem);	
 	    	}
+	    	//Add first Element
 	    	else
 	    		dictionaryList.getItems().add(newElem);
-	    	
     	}
-    	
-    	System.out.println(theDictionary);
     }
 
 
+    //Search for the Term in the Dictionary
     @FXML void searchPressed(ActionEvent event) {
 
     	//Get value of input
     	String searchTerm = searchTermInput.getText();
-    	
-   
+
     	for (Label singleTerm : dictionaryList.getItems())
 		{
-			if (singleTerm.getText().contains(searchTerm) )	{
+    		String currTerm = splitTermName(singleTerm.getText());
+    		
+    		if (currTerm.equals(searchTerm) )	{
 				dictionaryList.getSelectionModel().select(singleTerm);
 				break;
 			}
 		}
-    	
-    	System.out.println(theDictionary.searchTerm(searchTerm));
     }
 
+    
+    //Update the Meaning of the Term
     @FXML void updateMeaningPressed(ActionEvent event) {
 
        	//Get values of inputs
@@ -149,23 +148,17 @@ public class MyDictionaryController {
     	
     	// Insert new element to ListView if necessary
     	if (updateRes) {
-	    	
+    		
     		for (Label singleTerm : dictionaryList.getItems())
-    		{
-    			
-    			// Split the current Term name for comparison
-				int indexOfNewLine = singleTerm.getText().indexOf('\n');
-				String currTerm = singleTerm.getText().substring(5, indexOfNewLine).trim();
+    		{			
+				String currTerm = splitTermName(singleTerm.getText());
 				
 				if (currTerm.equals(termName) )	{
-    				singleTerm.setText("Term: "+termName +"\n\nMeaning: "+newMeaning);
+    				singleTerm.setText("Term: "+termName +"\n\nMeaning: "+newMeaning+"\n");
     				break;
     			}
     		}
     	}
-    
-    	
-    	System.out.println(theDictionary);
     }
 
     
@@ -175,6 +168,7 @@ public class MyDictionaryController {
 	@FXML void loadDicFromFilePressed(ActionEvent event) {
 
     	File fileToOpenWith = getFileFromUser();
+    	Alert alertMsg;  
     	
 		try {
 			FileInputStream fi = new FileInputStream(fileToOpenWith);
@@ -187,15 +181,17 @@ public class MyDictionaryController {
 			objInp.close();
 			fi.close();
 	    	
-			System.out.println(theDictionary);
 			
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			alertMsg = new Alert(Alert.AlertType.ERROR, "Could not find the file!");  
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			alertMsg = new Alert(Alert.AlertType.ERROR, "Class Was not Found!");  
 		} catch (IOException e) {
-			e.printStackTrace();
-		}    		
+			alertMsg = new Alert(Alert.AlertType.ERROR, "IO Exception!");  
+		} catch (NullPointerException e) {
+			alertMsg = new Alert(Alert.AlertType.ERROR, "File Not selected!");  
+			alertMsg.showAndWait();
+		}   
    }   
     
     
@@ -203,6 +199,8 @@ public class MyDictionaryController {
     @FXML void saveToFilePressed(ActionEvent event) {
     	
     	File fileToSaveIn = getFileFromUser();
+    	
+    	Alert alertMsg;    	
     	
 		try {
 			
@@ -214,11 +212,15 @@ public class MyDictionaryController {
 	    	fo.close();
 	    	
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			alertMsg = new Alert(Alert.AlertType.ERROR, "Could not find the file!");    	
 		} catch (IOException e) {
-			e.printStackTrace();
-		}	
+			alertMsg = new Alert(Alert.AlertType.ERROR, "IO Exception!");    
+		} catch (NullPointerException e) {
+			alertMsg = new Alert(Alert.AlertType.ERROR, "File Not selected!");  
+			alertMsg.showAndWait();
+		}   
     }
+    
     
     // Method to get the File from the user, using a File Chooser window
     private File getFileFromUser() {
@@ -231,6 +233,7 @@ public class MyDictionaryController {
     	return fileChooser.showOpenDialog(null);
     }
     
+    
     //The method will load all the Terms to Screen on Load file of dictionary
     private void loadAllTermsToListView() {
     	
@@ -240,23 +243,23 @@ public class MyDictionaryController {
     			
     		Entry<String,String> currTerm = dictionaryIter.next();
     		String newTermName = currTerm.getKey();
-    		String newMeaning = currTerm.getKey();
+    		String newMeaning = currTerm.getValue();
     		
     		Label newElem = new Label();
-	    	newElem.setText("Term: "+newTermName +"\n\nMeaning: "+newMeaning);
+	    	newElem.setText("Term: "+newTermName +"\n\nMeaning: "+newMeaning+"\n");
 	    	
     		dictionaryList.getItems().add(newElem);
     	}
     }
 
     
+	// Split the current Term name for comparison From the content of the Label
     private String splitTermName(String contentOfLabel) {
     	
+    	final int INDEX_OF_FIRST_COLON = 5;
 		int indexOfNewLine = contentOfLabel.indexOf('\n');
-		String currTerm = contentOfLabel.substring(5, indexOfNewLine).trim();
 		
-		return currTerm;
-		
+		return contentOfLabel.substring(INDEX_OF_FIRST_COLON, indexOfNewLine).trim();
     }
     
     
