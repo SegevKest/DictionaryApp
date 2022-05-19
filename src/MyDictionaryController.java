@@ -1,3 +1,9 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -5,6 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 
 public class MyDictionaryController {
 
@@ -31,7 +38,7 @@ public class MyDictionaryController {
     public void initialize() {
     	
     	theDictionary = new Dictionary();
-    
+    	
     }
     
     
@@ -94,10 +101,43 @@ public class MyDictionaryController {
     }
 
     @FXML void saveToFilePressed(ActionEvent event) {
+    	
+    	File fileToSaveIn = getFileFromUser();
+    	
+		try {
+			
+			FileOutputStream fo = new FileOutputStream(fileToSaveIn);
+			ObjectOutputStream outObj = new ObjectOutputStream(fo);
+			
+	    	outObj.writeObject(theDictionary.getTermsWithMeanings());
+	    	outObj.close();
+	    	fo.close();
+	    	
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    
+    	
 
-    	System.out.println("saveTo");
+    	
+    }
+    
+    // Method to get the File from the user, using a File Chooser window
+    private File getFileFromUser() {
+    	
+    	FileChooser fileChooser = new FileChooser();
+    	
+    	fileChooser.setTitle("Select a file to save the dictionary");
+    	fileChooser.setInitialDirectory(new File("."));
+    	
+    	return fileChooser.showOpenDialog(null);
+    	
     }
 
+    
     
 
 }

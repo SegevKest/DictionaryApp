@@ -11,13 +11,19 @@ public class Dictionary implements Serializable{
 		this.termsWithMeanings = new TreeMap<String,String>();
 	}
 
-
-
+	//Get of the dictionary
 	public SortedMap<String, String> getTermsWithMeanings() {
 		return termsWithMeanings;
 	}
 
+	// Set the Dictionary by the parameter
+	public void setTermsWithMeanings(SortedMap<String, String> termsWithMeanings) {
+		
+		if (termsWithMeanings instanceof SortedMap<?,?>)
+			this.termsWithMeanings = termsWithMeanings;
+	}
 
+	
 	public void addNewTerm(String termName, String meaning) {
 		
 		this.termsWithMeanings.put(termName, meaning);
@@ -25,7 +31,8 @@ public class Dictionary implements Serializable{
 		
 	}
 	
-	
+
+
 	public void updateMeaningOfTerm(String termName, String newMeaning) {
 
 		
@@ -53,12 +60,4 @@ public class Dictionary implements Serializable{
 	}
 	
 	
-	public static void main(String[] args) {
-		
-		Dictionary d = new Dictionary();
-
-		d.addNewTerm("Segev", "Kesten");
-		
-		System.out.println(d);
-	}
 }
